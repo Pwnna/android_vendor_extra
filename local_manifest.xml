@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+  <project name="Pwnna/android_packages_apps_fdroidapk" path="packages/apps/FDroid" remote="github" />
+  <project name="Pwnna/android_vendor_extra" path="vendor/extra" remote="github" />
+</manifest>
+
