@@ -20,4 +20,10 @@ Future Features
 - Tor integration?
 - Others? Suggestions in issues please.
 
+To use
+------
 
+    $ cd .repo/local_manifests
+    $ wget -O mecuric.xml https://raw.githubusercontent.com/Pwnna/android_vendor_extra/cm-12.1/local_manifest.xml
+    $ croot
+    $ repo sync
