@@ -1,0 +1,9 @@
+---
+- hosts: all
+  vars:
+    aosp_base_dir: /home/dev/lineage
+    use_ccache: true
+    ccache_dir: /home/dev/lineage/.ccache
+    ccache_size: 40G
+  roles:
+    - aosp-dev

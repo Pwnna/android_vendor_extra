@@ -1,0 +1,20 @@
+name: lineage
+image: ubuntu/xenial
+
+users:
+  - name: dev
+    shell: /bin/bash
+
+shell:
+  user: dev
+
+shares:
+  - source: .
+    dest: /home/dev/lineage
+
+extras:
+  network_wait_timeout: 60
+
+provisioning:
+  - type: ansible
+    playbook: vendor/extra/playbook.yml

@@ -1,0 +1,8 @@
+patches from https://github.com/lineageos4microg/docker-lineage-cicd/
+
+Modified to be restricted to privileged system apps only. The patch in that
+repository is by default open for all user apps. It uses a sed to change the
+patch to be restricted to privileged system apps. This directory has that
+feature built in directly to the patches.
+
+See: https://github.com/lineageos4microg/docker-lineage-cicd/blob/7e1ccbb8d3324da78311874a98510dadfc032876/src/build.sh#L176-L177

@@ -1,0 +1,39 @@
+---
+- name: installing prerequisite packages
+  apt:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - bc
+    - curl
+    - bison
+    - g++-multilib
+    - git
+    - gperf
+    - libxml2-utils
+    - flex
+    - gnupg
+    - gperf
+    - libesd0-dev
+    - libncurses5-dev
+    - libsdl1.2-dev
+    - libxml2
+    - libxml2-utils
+    - imagemagick
+    - lzop
+    - pngcrush
+    - schedtool
+    - squashfs-tools
+    - xsltproc
+    - zip
+    - zlib1g-dev
+    - maven
+    - openjdk-8-jdk
+  become: yes
+
+- name: source aosp development
+  template:
+    src: aosp-dev.sh
+    dest: /etc/profile.d/aosp-dev.sh
+  become: yes
+
