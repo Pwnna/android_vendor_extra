@@ -10,4 +10,9 @@ PRODUCT_PACKAGES += \
 	FDroid \
 	FDroidPrivilegedExtension \
 	YalpStore \
-	GmsDroidGuard
+	GmsDroidGuard \
+	YahooWeatherProvider
+
+PRODUCT_DEFAULT_DEV_CERTIFICATE := vendor/extra/keys/releasekey
+PRODUCT_OTA_PUBLIC_KEYS := vendor/extra/keys/releasekey
+PRODUCT_EXTRA_RECOVERY_KEYS := vendor/extra/keys/releasekey

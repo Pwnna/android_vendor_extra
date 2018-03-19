@@ -1,5 +1,6 @@
 #!/bin/bash
 
+CORES=4
 BRANCH=${BRANCH:-github/cm-14.1}
 PATCH_NAME="android_frameworks_base-N.patch"
 
@@ -14,6 +15,11 @@ KEYS_DIR=$V/keys
 
 if [ -z "$T" ]; then
   echo "error: please run source build/envsetup.sh first" >&2
+  exit 1
+fi
+
+if [ -z "$TARGET_PRODUCT" ]; then
+  echo "error: please run breakfast <device> to select a device first" >&2
   exit 1
 fi
 
@@ -50,3 +56,4 @@ pushd frameworks/base
   git clean -q -f # remove the .orig files created by patch
 popd
 
+time make -j${CORES} bacon

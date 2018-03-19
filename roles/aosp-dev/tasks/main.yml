@@ -29,6 +29,7 @@
     - zlib1g-dev
     - maven
     - openjdk-8-jdk
+    - bsdmainutils
   become: yes
 
 - name: source aosp development
