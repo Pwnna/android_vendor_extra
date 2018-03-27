@@ -32,6 +32,26 @@
     - bsdmainutils
   become: yes
 
+- name: creating ~/bin
+  file:
+    path: /home/dev/bin
+    state: directory
+    owner: dev
+    group: dev
+
+- name: download repo
+  get_url:
+    url: https://storage.googleapis.com/git-repo-downloads/repo
+    dest: /home/dev/bin/repo
+    checksum: sha256:e147f0392686c40cfd7d5e6f332c6ee74c4eab4d24e2694b3b0a0c037bf51dc5
+
+- name: setting repo to be executable
+  file:
+    path: /home/dev/bin/repo
+    owner: dev
+    group: dev
+    mode: 0755
+
 - name: source aosp development
   template:
     src: aosp-dev.sh
