@@ -1,35 +1,34 @@
 ---
 - name: installing prerequisite packages
   apt:
-    name: "{{ item }}"
+    name:
+      - bc
+      - curl
+      - bison
+      - g++-multilib
+      - git
+      - gperf
+      - libxml2-utils
+      - flex
+      - gnupg
+      - gperf
+      - libesd0-dev
+      - libncurses5-dev
+      - libsdl1.2-dev
+      - libxml2
+      - libxml2-utils
+      - imagemagick
+      - lzop
+      - pngcrush
+      - schedtool
+      - squashfs-tools
+      - xsltproc
+      - zip
+      - zlib1g-dev
+      - maven
+      - openjdk-8-jdk
+      - bsdmainutils
     state: latest
-  with_items:
-    - bc
-    - curl
-    - bison
-    - g++-multilib
-    - git
-    - gperf
-    - libxml2-utils
-    - flex
-    - gnupg
-    - gperf
-    - libesd0-dev
-    - libncurses5-dev
-    - libsdl1.2-dev
-    - libxml2
-    - libxml2-utils
-    - imagemagick
-    - lzop
-    - pngcrush
-    - schedtool
-    - squashfs-tools
-    - xsltproc
-    - zip
-    - zlib1g-dev
-    - maven
-    - openjdk-8-jdk
-    - bsdmainutils
   become: yes
 
 - name: creating ~/bin
@@ -43,7 +42,6 @@
   get_url:
     url: https://storage.googleapis.com/git-repo-downloads/repo
     dest: /home/dev/bin/repo
-    checksum: sha256:e147f0392686c40cfd7d5e6f332c6ee74c4eab4d24e2694b3b0a0c037bf51dc5
 
 - name: setting repo to be executable
   file:

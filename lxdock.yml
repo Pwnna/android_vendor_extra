@@ -16,5 +16,5 @@ extras:
   network_wait_timeout: 60
 
 provisioning:
-  - type: ansible
-    playbook: vendor/extra/playbook.yml
+  - type: ansible_local
+    dir: vendor/extra/provisioning
