@@ -1,2 +1,2 @@
-*.retry
-
+keys/*
+!keys/generate.sh
