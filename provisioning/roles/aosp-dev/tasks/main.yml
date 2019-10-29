@@ -3,31 +3,29 @@
   apt:
     name:
       - bc
-      - curl
       - bison
+      - bsdmainutils
+      - curl
+      - flex
       - g++-multilib
       - git
-      - gperf
-      - libxml2-utils
-      - flex
       - gnupg
       - gperf
+      - imagemagick
       - libesd0-dev
+      - liblz4-tool
       - libncurses5-dev
       - libsdl1.2-dev
       - libxml2
       - libxml2-utils
-      - imagemagick
       - lzop
+      - maven
       - pngcrush
       - schedtool
       - squashfs-tools
       - xsltproc
       - zip
       - zlib1g-dev
-      - maven
-      - openjdk-8-jdk
-      - bsdmainutils
     state: latest
   become: yes
 
