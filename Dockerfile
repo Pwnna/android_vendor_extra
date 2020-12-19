@@ -33,6 +33,7 @@ RUN set -xe; \
       rsync \
       schedtool \
       squashfs-tools \
+      sudo \
       wget \
       xsltproc \
       zip \
@@ -41,3 +42,4 @@ RUN set -xe; \
     wget -O /usr/local/bin/repo https://storage.googleapis.com/git-repo-downloads/repo; \
     chmod +x /usr/local/bin/repo;
 
+COPY scripts /opt/scripts
