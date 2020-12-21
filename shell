@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cd vendor/extra
+exec docker-compose exec main /opt/scripts/shell-wrapper.sh

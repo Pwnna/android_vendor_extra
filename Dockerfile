@@ -43,3 +43,5 @@ RUN set -xe; \
     chmod +x /usr/local/bin/repo;
 
 COPY scripts /opt/scripts
+COPY ./auto-cd.sh /etc/profile.d/auto-cd.sh
+WORKDIR /srv/android

@@ -3,7 +3,7 @@
 SUBJECT="/C=CA/ST=Ontario/L=Ottawa/O=Pwnna/OU=Pwnna/CN=PwnnaOS/emailAddress=pwnna@fastmail.com"
 KEYS_DIR=vendor/extra/keys
 
-for x in releasekey platform shared media; do
+for x in releasekey platform shared media networkstack; do
   development/tools/make_key $KEYS_DIR/$x "$SUBJECT"
 done
 
