@@ -4,7 +4,10 @@ services:
   main:
     build:
       context: .
+    privileged: yes
     volumes:
       - ../..:/srv/android
+      - $HOME/.android:/home/builder/.android
+      - /dev/bus/usb:/dev/bus/usb
     command: ["sleep", "infinity"]
     init: yes
