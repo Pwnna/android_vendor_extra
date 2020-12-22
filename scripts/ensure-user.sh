@@ -24,3 +24,5 @@ elif [ "$uid" != "$HOST_UID" ]; then
   deluser $USERNAME
   adduser --gecos "" --disabled-password --uid $HOST_UID --gid $HOST_GID $USERNAME
 fi
+
+chown $USERNAME:$USERNAME /home/$USERNAME

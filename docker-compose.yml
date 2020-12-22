@@ -8,6 +8,7 @@ services:
     volumes:
       - ../..:/srv/android
       - $HOME/.android:/home/builder/.android
+      - ./ccache:/srv/ccache
       - /dev/bus/usb:/dev/bus/usb
     command: ["sleep", "infinity"]
     init: yes

@@ -49,4 +49,5 @@ RUN set -xe; \
 
 COPY scripts /opt/scripts
 COPY ./auto-cd.sh /etc/profile.d/auto-cd.sh
+
 WORKDIR /srv/android
