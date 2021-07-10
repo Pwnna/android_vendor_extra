@@ -12,8 +12,7 @@ for f in $(find . -type f); do
   git status
   popd
 done
-
-exit 1
+popd
 
 echo "source build/envsetup.sh"
 source build/envsetup.sh
