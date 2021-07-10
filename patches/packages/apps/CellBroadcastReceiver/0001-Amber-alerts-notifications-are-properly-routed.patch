@@ -1,0 +1,29 @@
+From 45e0aba857aea474e554060b6daa5e682c78f25d Mon Sep 17 00:00:00 2001
+From: Shuhao Wu <shuhao@shuhaowu.com>
+Date: Fri, 9 Jul 2021 20:39:59 -0400
+Subject: [PATCH] Amber alerts notifications are properly routed
+
+Change-Id: I070f4fecd49aaed36f05a52e8b6716596e972bd1
+---
+ .../cellbroadcastreceiver/CellBroadcastAlertService.java     | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/src/com/android/cellbroadcastreceiver/CellBroadcastAlertService.java b/src/com/android/cellbroadcastreceiver/CellBroadcastAlertService.java
+index ec3c1dbd..061da919 100644
+--- a/src/com/android/cellbroadcastreceiver/CellBroadcastAlertService.java
++++ b/src/com/android/cellbroadcastreceiver/CellBroadcastAlertService.java
+@@ -402,7 +402,10 @@ public class CellBroadcastAlertService extends Service {
+             return;
+         }
+ 
+-        if (CellBroadcastChannelManager.isEmergencyMessage(this, cbm)) {
++       String messageBody = cbm.getMessageBody().toLowerCase();
++       boolean isAmberAlert = messageBody.contains("amber") || messageBody.contains("abduction");
++
++        if (CellBroadcastChannelManager.isEmergencyMessage(this, cbm) && !isAmberAlert) {
+             // start alert sound / vibration / TTS and display full-screen alert
+             openEmergencyAlertNotification(cbm);
+         } else {
+-- 
+2.25.1
+

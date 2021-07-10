@@ -1,0 +1,114 @@
+From 20fa12bcfac338529c32dc3be8f98caa99de8507 Mon Sep 17 00:00:00 2001
+From: Justin Justin <justin1993nw@gmail.com>
+Date: Sat, 11 Jul 2020 21:11:37 +0200
+Subject: [PATCH] Revert "LatinIME: Do we really still want Holo?"
+
+This reverts commit 13764c70334d157332d73a21a0af3ba101ed7034.
+
+Reason for revert: There is no reason to remove Holo just because it is 'old'. A lot of people still like Holo. LineageOS has a lot of customization features, so removing a keyboard-theme for no reason is not a good idea. Since Holo was already in 17.1-branch, it should be there at least until end of 17.1 as long as there is no technical reason.
+
+Change-Id: Ie57f75e23851f780ce302723d95d9f6b2feaf6c1
+---
+
+diff --git a/java/res/values/keyboard-themes.xml b/java/res/values/keyboard-themes.xml
+index 2dee317..2826f5f 100644
+--- a/java/res/values/keyboard-themes.xml
++++ b/java/res/values/keyboard-themes.xml
+@@ -23,6 +23,8 @@
+         <item>@string/keyboard_theme_material_light</item>
+         <item>@string/keyboard_theme_material_dark</item>
+         <item>@string/keyboard_theme_follow_system</item>
++        <item>@string/keyboard_theme_holo_white</item>
++        <item>@string/keyboard_theme_holo_blue</item>
+     </string-array>
+     <!-- An element must be a keyboard theme id of
+          {@link com.android.inputmethod.keyboard.KeyboardTheme#THEME_ID_ICS} etc. -->
+@@ -30,5 +32,7 @@
+         <item>3</item>
+         <item>4</item>
+         <item>5</item>
++        <item>2</item>
++        <item>0</item>
+     </integer-array>
+ </resources>
+diff --git a/java/src/com/android/inputmethod/keyboard/KeyboardTheme.java b/java/src/com/android/inputmethod/keyboard/KeyboardTheme.java
+index 61636d7..2796c2e 100644
+--- a/java/src/com/android/inputmethod/keyboard/KeyboardTheme.java
++++ b/java/src/com/android/inputmethod/keyboard/KeyboardTheme.java
+@@ -33,10 +33,13 @@
+ public final class KeyboardTheme implements Comparable<KeyboardTheme> {
+     private static final String TAG = KeyboardTheme.class.getSimpleName();
+ 
++    static final String KLP_KEYBOARD_THEME_KEY = "pref_keyboard_layout_20110916";
+     static final String LXX_KEYBOARD_THEME_KEY = "pref_keyboard_theme_20140509";
+ 
+     // These should be aligned with Keyboard.themeId and Keyboard.Case.keyboardTheme
+     // attributes' values in attrs.xml.
++    public static final int THEME_ID_ICS = 0;
++    public static final int THEME_ID_KLP = 2;
+     public static final int THEME_ID_LXX_LIGHT = 3;
+     public static final int THEME_ID_LXX_DARK = 4;
+     public static final int THEME_ID_AUTO_DARK = 5;
+@@ -46,6 +49,12 @@
+ 
+     /* package private for testing */
+     static final KeyboardTheme[] KEYBOARD_THEMES = {
++        new KeyboardTheme(THEME_ID_ICS, "ICS", R.style.KeyboardTheme_ICS,
++                // This has never been selected because we support ICS or later.
++                VERSION_CODES.BASE),
++        new KeyboardTheme(THEME_ID_KLP, "KLP", R.style.KeyboardTheme_KLP,
++                // Default theme for ICS, JB, and KLP.
++                VERSION_CODES.ICE_CREAM_SANDWICH),
+         new KeyboardTheme(THEME_ID_LXX_LIGHT, "LXXLight", R.style.KeyboardTheme_LXX_Light,
+                 // Default theme for LXX.
+                 Build.VERSION_CODES.LOLLIPOP),
+@@ -109,6 +118,25 @@
+     /* package private for testing */
+     static KeyboardTheme getDefaultKeyboardTheme(final SharedPreferences prefs,
+             final int sdkVersion, final KeyboardTheme[] availableThemeArray) {
++        final String klpThemeIdString = prefs.getString(KLP_KEYBOARD_THEME_KEY, null);
++        if (klpThemeIdString != null) {
++            if (sdkVersion <= VERSION_CODES.KITKAT) {
++                try {
++                    final int themeId = Integer.parseInt(klpThemeIdString);
++                    final KeyboardTheme theme = searchKeyboardThemeById(themeId,
++                            availableThemeArray);
++                    if (theme != null) {
++                        return theme;
++                    }
++                    Log.w(TAG, "Unknown keyboard theme in KLP preference: " + klpThemeIdString);
++                } catch (final NumberFormatException e) {
++                    Log.w(TAG, "Illegal keyboard theme in KLP preference: " + klpThemeIdString, e);
++                }
++            }
++            // Remove old preference.
++            Log.i(TAG, "Remove KLP keyboard theme preference: " + klpThemeIdString);
++            prefs.edit().remove(KLP_KEYBOARD_THEME_KEY).apply();
++        }
+         // TODO: This search algorithm isn't optimal if there are many themes.
+         for (final KeyboardTheme theme : availableThemeArray) {
+             if (sdkVersion >= theme.mMinApiVersion) {
+@@ -124,7 +152,22 @@
+     }
+ 
+     public static void saveKeyboardThemeId(final int themeId, final SharedPreferences prefs) {
+-        prefs.edit().putString(LXX_KEYBOARD_THEME_KEY, Integer.toString(themeId)).apply();
++        saveKeyboardThemeId(themeId, prefs, BuildCompatUtils.EFFECTIVE_SDK_INT);
++    }
++
++    /* package private for testing */
++    static String getPreferenceKey(final int sdkVersion) {
++        if (sdkVersion <= VERSION_CODES.KITKAT) {
++            return KLP_KEYBOARD_THEME_KEY;
++        }
++        return LXX_KEYBOARD_THEME_KEY;
++    }
++
++    /* package private for testing */
++    static void saveKeyboardThemeId(final int themeId, final SharedPreferences prefs,
++            final int sdkVersion) {
++        final String prefKey = getPreferenceKey(sdkVersion);
++        prefs.edit().putString(prefKey, Integer.toString(themeId)).apply();
+     }
+ 
+     public static KeyboardTheme getKeyboardTheme(final Context context) {
