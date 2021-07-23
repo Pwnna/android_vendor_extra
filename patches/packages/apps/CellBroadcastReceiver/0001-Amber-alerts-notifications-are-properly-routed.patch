@@ -1,27 +1,26 @@
-From 57a9702d636503d718e6f2bd24c687284a00acc1 Mon Sep 17 00:00:00 2001
+From 45e0aba857aea474e554060b6daa5e682c78f25d Mon Sep 17 00:00:00 2001
 From: Shuhao Wu <shuhao@shuhaowu.com>
-Date: Fri, 9 Jul 2021 20:59:03 -0400
+Date: Fri, 9 Jul 2021 20:39:59 -0400
 Subject: [PATCH] Amber alerts notifications are properly routed
 
-Change-Id: Idd460a41189204c194b197eb2f0daa3a442c268d
+Change-Id: I070f4fecd49aaed36f05a52e8b6716596e972bd1
 ---
- .../cellbroadcastreceiver/CellBroadcastAlertService.java    | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ .../cellbroadcastreceiver/CellBroadcastAlertService.java     | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/src/com/android/cellbroadcastreceiver/CellBroadcastAlertService.java b/src/com/android/cellbroadcastreceiver/CellBroadcastAlertService.java
-index ee92eee7..bc8a8b2c 100644
+index ec3c1dbd..061da919 100644
 --- a/src/com/android/cellbroadcastreceiver/CellBroadcastAlertService.java
 +++ b/src/com/android/cellbroadcastreceiver/CellBroadcastAlertService.java
-@@ -360,7 +360,11 @@ public class CellBroadcastAlertService extends Service
-         // Either shown the dialog, adding it to notification (non emergency, or delayed emergency),
-         CellBroadcastChannelManager channelManager = new CellBroadcastChannelManager(
-                 mContext, cbm.getSubscriptionId());
--        if (channelManager.isEmergencyMessage(cbm) && !sRemindAfterCallFinish) {
+@@ -402,7 +402,10 @@ public class CellBroadcastAlertService extends Service {
+             return;
+         }
+ 
+-        if (CellBroadcastChannelManager.isEmergencyMessage(this, cbm)) {
++       String messageBody = cbm.getMessageBody().toLowerCase();
++       boolean isAmberAlert = messageBody.contains("amber") || messageBody.contains("abduction");
 +
-+        String messageBody = cbm.getMessageBody().toLowerCase();
-+        boolean isAmberAlert = messageBody.contains("amber") || messageBody.contains("abduction");
-+
-+        if (channelManager.isEmergencyMessage(cbm) && !sRemindAfterCallFinish && !isAmberAlert) {
++        if (CellBroadcastChannelManager.isEmergencyMessage(this, cbm) && !isAmberAlert) {
              // start alert sound / vibration / TTS and display full-screen alert
              openEmergencyAlertNotification(cbm);
          } else {
